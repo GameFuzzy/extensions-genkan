@@ -779,9 +779,9 @@ class Parser {
         return sortedChapters;
     }
     getImageSrc(imageObj, baseUrl) {
-        var _a, _b, _c;
-        let isFullLink = (_a = imageObj === null || imageObj === void 0 ? void 0 : imageObj.attr('style')) === null || _a === void 0 ? void 0 : _a.startsWith('http');
-        let trimmedLink = (_c = (_b = imageObj === null || imageObj === void 0 ? void 0 : imageObj.attr('style')) === null || _b === void 0 ? void 0 : _b.split('(')[1]) === null || _c === void 0 ? void 0 : _c.split(')')[0];
+        var _a, _b;
+        let trimmedLink = (_b = (_a = imageObj === null || imageObj === void 0 ? void 0 : imageObj.attr('style')) === null || _a === void 0 ? void 0 : _a.split('(')[1]) === null || _b === void 0 ? void 0 : _b.split(')')[0];
+        let isFullLink = trimmedLink === null || trimmedLink === void 0 ? void 0 : trimmedLink.startsWith('http');
         let image = isFullLink ? trimmedLink : baseUrl + trimmedLink;
         return image !== null && image !== void 0 ? image : '';
     }
