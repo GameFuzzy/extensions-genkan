@@ -395,7 +395,7 @@ class Genkan extends paperback_extensions_common_1.Source {
             });
             let data = yield this.requestManager.schedule(request, 1);
             let $ = this.cheerio.load(data.data);
-            let manga = this.parser.parseHomeSection($, this);
+            let manga = this.parser.parseSearchSection($, this);
             let mData = { page: (page + 1) };
             if (this.parser.isLastPage($)) {
                 mData = undefined;
@@ -420,7 +420,7 @@ class Genkan extends paperback_extensions_common_1.Source {
                 let data = yield this.requestManager.schedule(request, 1);
                 let $ = this.cheerio.load(data.data);
                 let updatedManga = this.parser.filterUpdatedManga($, time, ids, this);
-                loadNextPage = updatedManga.loadNextPage;
+                loadNextPage = updatedManga.loadNextPage && !this.parser.isLastPage($);
                 if (loadNextPage) {
                     page++;
                 }
@@ -443,7 +443,7 @@ class Genkan extends paperback_extensions_common_1.Source {
             const sections = [
                 {
                     request: createRequestObject({
-                        url: `${this.baseUrl}/comics?page=0`,
+                        url: `${this.baseUrl}/latest?page=0`,
                         method: 'GET',
                         headers: this.constructHeaders({})
                     }),
@@ -455,7 +455,7 @@ class Genkan extends paperback_extensions_common_1.Source {
                 },
                 {
                     request: createRequestObject({
-                        url: `${this.baseUrl}/latest?page=0`,
+                        url: `${this.baseUrl}/comics?page=0`,
                         method: 'GET',
                         headers: this.constructHeaders({})
                     }),
@@ -488,11 +488,11 @@ class Genkan extends paperback_extensions_common_1.Source {
             let sortBy = '';
             switch (homepageSectionId) {
                 case '0': {
-                    sortBy = `comics`;
+                    sortBy = `latest`;
                     break;
                 }
                 case '1': {
-                    sortBy = `latest`;
+                    sortBy = `comics`;
                     break;
                 }
                 default:
@@ -566,7 +566,10 @@ class Genkan extends paperback_extensions_common_1.Source {
         else if (timeAgo.includes('weeks') || timeAgo.includes('week')) {
             time = new Date(Date.now() - trimmed * 604800000);
         }
-        else if (timeAgo.includes('year') || timeAgo.includes('years')) {
+        else if (timeAgo.includes('months') || timeAgo.includes('month')) {
+            time = new Date(Date.now() - trimmed * 2548800000);
+        }
+        else if (timeAgo.includes('years') || timeAgo.includes('year')) {
             time = new Date(Date.now() - trimmed * 31556952000);
         }
         else {
@@ -586,7 +589,7 @@ class Parser {
     parseMangaDetails($, mangaId, source) {
         var _a;
         let title = this.decodeHTMLEntity($("div#content h5").first().text().trim());
-        let summary = this.decodeHTMLEntity($("div.col-lg-9").text().split("Description\n")[1].split(" Volume")[0].trim());
+        let summary = this.decodeHTMLEntity($("div.col-lg-9").text().split("Description\n")[1].split("Volume")[0].trim());
         let image = encodeURI(this.getImageSrc($("div.media a").first(), source.baseUrl));
         let views = Number((_a = $('.fa-eye').text()) !== null && _a !== void 0 ? _a : 0);
         let lastUpdate, hentai;
@@ -668,6 +671,9 @@ class Parser {
             longStrip: false
         });
     }
+    parseSearchSection($, source, collectedIds) {
+        return this.parseHomeSection($, source, collectedIds);
+    }
     parseHomeSection($, source, collectedIds) {
         var _a, _b;
         let items = [];
@@ -679,7 +685,7 @@ class Parser {
             let title = this.decodeHTMLEntity($('a.list-title', $(obj)).first().text().trim());
             let id = (_b = $('a.list-title', $(obj)).attr('href')) === null || _b === void 0 ? void 0 : _b.replace(`${source.baseUrl}/comics/`, '').split('/')[0];
             if (!id || !title || !image) {
-                throw (`Failed to parse homepage sections for ${source.baseUrl}/${source.homePage}/`);
+                throw (`Failed to parse homepage sections for ${source.baseUrl}/`);
             }
             if (!collectedIds.includes(id)) {
                 items.push(createMangaTile({
@@ -752,13 +758,13 @@ exports.Parser = Parser;
 },{"paperback-extensions-common":4}],28:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Leviatanscans = exports.LeviatanscansInfo = void 0;
+exports.LeviatanScans = exports.LeviatanScansInfo = void 0;
 const paperback_extensions_common_1 = require("paperback-extensions-common");
 const Genkan_1 = require("../Genkan");
 const LEVIATANSCANS_DOMAIN = "https://leviatanscans.com";
-exports.LeviatanscansInfo = {
+exports.LeviatanScansInfo = {
     version: '1.0.0',
-    name: 'Leviatanscans',
+    name: 'LeviatanScans',
     description: 'Extension that pulls manga from leviatanscans.com',
     author: 'GameFuzzy',
     authorWebsite: 'http://github.com/gamefuzzy',
@@ -772,14 +778,14 @@ exports.LeviatanscansInfo = {
         }
     ]
 };
-class Leviatanscans extends Genkan_1.Genkan {
+class LeviatanScans extends Genkan_1.Genkan {
     constructor() {
         super(...arguments);
         this.baseUrl = LEVIATANSCANS_DOMAIN;
         this.languageCode = paperback_extensions_common_1.LanguageCode.ENGLISH;
     }
 }
-exports.Leviatanscans = Leviatanscans;
+exports.LeviatanScans = LeviatanScans;
 
 },{"../Genkan":26,"paperback-extensions-common":4}]},{},[28])(28)
 });
