@@ -642,7 +642,7 @@ class Parser {
                 langCode: (_b = source.languageCode) !== null && _b !== void 0 ? _b : paperback_extensions_common_1.LanguageCode.UNKNOWN,
                 volume: Number.isNaN(volume) ? 0 : volume,
                 chapNum: Number.isNaN(chapNum) ? 0 : chapNum,
-                name: Number.isNaN(chapNum) ? chapName : '',
+                name: chapName.match(/Chapter \d*/) ? undefined : chapName,
                 time: releaseDate
             }));
         }
