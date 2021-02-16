@@ -683,7 +683,7 @@ class Parser {
                 langCode: (_b = source.languageCode) !== null && _b !== void 0 ? _b : paperback_extensions_common_1.LanguageCode.UNKNOWN,
                 volume: Number.isNaN(volume) ? 0 : volume,
                 chapNum: Number.isNaN(chapNum) ? 0 : chapNum,
-                name: chapName.match(/Chapter \d*/) ? undefined : chapName,
+                name: chapName.match(/Chapter \d*/) ? undefined : this.decodeHTMLEntity(chapName),
                 time: releaseDate
             }));
         }
@@ -768,13 +768,7 @@ class Parser {
     // UTILITY METHODS
     // Chapter sorting
     sortChapters(chapters) {
-        let sortedChapters = [];
-        chapters.forEach((c) => {
-            var _a;
-            if (((_a = sortedChapters[sortedChapters.indexOf(c)]) === null || _a === void 0 ? void 0 : _a.id) !== (c === null || c === void 0 ? void 0 : c.id)) {
-                sortedChapters.push(c);
-            }
-        });
+        let sortedChapters = chapters.filter((obj, index, arr) => arr.map(mapObj => mapObj.id).indexOf(obj.id) === index);
         sortedChapters.sort((a, b) => { var _a, _b; return (((_a = a === null || a === void 0 ? void 0 : a.volume) !== null && _a !== void 0 ? _a : 0) - ((_b = b === null || b === void 0 ? void 0 : b.volume) !== null && _b !== void 0 ? _b : 0) ? -1 : 1 || (a === null || a === void 0 ? void 0 : a.chapNum) - (b === null || b === void 0 ? void 0 : b.chapNum) ? -1 : 1); });
         return sortedChapters;
     }
