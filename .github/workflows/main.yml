@@ -1,12 +1,4 @@
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-      types: [closed]
-      branches:
-          - main
-
+on: push
 name: Bundle and Publish Sources
 jobs:
   build:
@@ -20,15 +12,25 @@ jobs:
     steps:
       - name: Checkout Branch
         uses: actions/checkout@v2
+
       - name: Setup Node.js environment
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2.1.2
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+
+      - name: Checkout existing bundles
+        uses: actions/checkout@v2
+        with:
+          ref: gh-pages
+          path: bundles
+
       - run: npm install
-      - run: npm run bundle
-      - run: npx typedoc -out bundles/docs
-        continue-on-error: true
+      - run: npm run bundle -- --folder=${{ steps.extract_branch.outputs.branch }}
 
       - name: Deploy
         uses: s0/git-publish-subdir-action@master
