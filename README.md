@@ -1,6 +1,6 @@
 # extensions-genkan
 
-<h3>Contains sources:</h3>  
+### Contains sources:  
 EdelgardeScans,  
 HatigarmScans,  
 HunlightScans,  
