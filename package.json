@@ -2,7 +2,7 @@
   "name": "madara-extensions",
   "version": "1.0.0",
   "repositoryName": "[PROMISES] Genkan Extensions",
-  "description": "Additional sources for Paperback using the Genkan template",
+  "description": "Contains scanlation sources using the Genkan template",
   "scripts": {
     "start": "tsc && node dist/api.js",
     "build": "tsc",
