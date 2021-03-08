@@ -228,7 +228,7 @@ export abstract class Genkan extends Source {
     }
 
 
-    globalRequestHeaders(): RequestHeaders {
+    async globalRequestHeaders(): Promise<RequestHeaders> {
         if (this.userAgentRandomizer !== '') {
             return {
                 "referer": `${this.baseUrl}/`,
