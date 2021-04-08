@@ -793,19 +793,19 @@ exports.Parser = Parser;
 },{"paperback-extensions-common":4}],29:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SecretScans = exports.SecretScansInfo = void 0;
+exports.LynxScans = exports.LynxScansInfo = void 0;
 const paperback_extensions_common_1 = require("paperback-extensions-common");
 const GenkanLegacy_1 = require("../GenkanLegacy");
-const SECRETSCANS_DOMAIN = "https://secretscans.co";
-exports.SecretScansInfo = {
+const LYNXSCANS_DOMAIN = "https://lynxscans.com";
+exports.LynxScansInfo = {
     version: '1.0.0',
-    name: 'SecretScans',
-    description: 'Extension that pulls manga from secretscans.co',
+    name: 'LynxScans',
+    description: 'Extension that pulls manga from lynxscans.com',
     author: 'GameFuzzy',
     authorWebsite: 'http://github.com/gamefuzzy',
     icon: "icon.png",
     hentaiSource: false,
-    websiteBaseURL: SECRETSCANS_DOMAIN,
+    websiteBaseURL: LYNXSCANS_DOMAIN,
     sourceTags: [
         {
             text: "Notifications",
@@ -813,14 +813,14 @@ exports.SecretScansInfo = {
         }
     ]
 };
-class SecretScans extends GenkanLegacy_1.GenkanLegacy {
+class LynxScans extends GenkanLegacy_1.GenkanLegacy {
     constructor() {
         super(...arguments);
-        this.baseUrl = SECRETSCANS_DOMAIN;
+        this.baseUrl = LYNXSCANS_DOMAIN;
         this.languageCode = paperback_extensions_common_1.LanguageCode.ENGLISH;
     }
 }
-exports.SecretScans = SecretScans;
+exports.LynxScans = LynxScans;
 
 },{"../GenkanLegacy":27,"paperback-extensions-common":4}]},{},[29])(29)
 });
