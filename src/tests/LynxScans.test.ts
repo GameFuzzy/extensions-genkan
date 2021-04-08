@@ -1,13 +1,13 @@
 import cheerio from 'cheerio'
 import { Genkan } from '../Genkan'
-import { SecretScans } from '../SecretScans/SecretScans'
+import { LynxScans } from '../LynxScans/LynxScans'
 import { APIWrapper } from "paperback-extensions-common";
 
-describe('SecretScans Tests', function () {
+describe('LynxScans Tests', function () {
 
 
     var wrapper: APIWrapper = new APIWrapper();
-    var source: Genkan = new SecretScans(cheerio);
+    var source: Genkan = new LynxScans(cheerio);
     var chai = require('chai'), expect = chai.expect, should = chai.should();
     var chaiAsPromised = require('chai-as-promised');
     chai.use(chaiAsPromised);
@@ -58,7 +58,7 @@ describe('SecretScans Tests', function () {
 
     it("Testing search", async () => {
         let testSearch = createSearchRequest({
-            title: 'rich'
+            title: 'a way'
         });
 
         let search = await wrapper.searchRequest(source, testSearch, {page: 0});
